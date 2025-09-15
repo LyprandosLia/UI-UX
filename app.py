@@ -7,7 +7,7 @@ import sys
 
 from shop_window import ShopWindow
 
-# Info Window for displaying information about locations
+# Info window for displaying information about locations
 class InfoWindow(QDialog):
     def __init__(self, title, info_text, bg_image=None):
         super().__init__()
