@@ -1,8 +1,12 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QLabel, \
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QListWidget,QWidget, QLabel, \
     QDialog, QFrame, QGridLayout, QScrollArea
 from PySide6.QtCore import QSize, Signal, Qt
+from PyQt5.QtMultimedia import QSound
 from PySide6.QtGui import QPixmap
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PySide6.QtWidgets import QLabel
+from PyQt5.QtCore import QUrl
+import os
 import sys
 
 from shop_window import ShopWindow
@@ -99,7 +103,27 @@ class SecondWindow(QMainWindow):
             }
         """)
         castle_button.clicked.connect(self.show_castle_info)
+        
+        #Central Square
+        square_button = QPushButton("Κεντρική Πλατεία",map_label)
+        square_button.setGeometry(540,80,80,80)
+        square_button.setFixedSize(80,80)
+        square_button.setStyleSheet("""
+            QPushButton {
+                border-radius: 40px;  
+                background-color: brown; 
+                color: white;
+                font-weight: bold;
+                border: 2px solid #2980b9;
+            }
+            QPushButton:hover {
+                background-color: red;
+            }
+        """)
+        square_button.clicked.connect(self.square)
 
+
+    #Castle functions
     def resizeEvent(self, event):
         self.bg_label.resize(self.size())
         self.back_button.raise_()
@@ -114,13 +138,79 @@ class SecondWindow(QMainWindow):
         info_text = " Εδώ βρίσκεται το κάστρο που ζει ο βασιλιάς. Το κάστρο περιβάλλεται από ψηλά τείχη και έχει μια μεγάλη αυλή στο κέντρο. Στο εσωτερικό, υπάρχουν πολλά δωμάτια όπως η αίθουσα του θρόνου, η τραπεζαρία και οι χώροι διαμονής για τη βασιλική οικογένεια."
         info_window = InfoWindow(title, info_text, "images/corridor.jpg")
         info_window.exec()
+    def square(self):
+        info_window = QDialog()
+        info_window.setWindowTitle("Welcome to the Square")
+        info_window.resize(800, 600)
 
+        main_layout = QVBoxLayout()  # Κύριο κάθετο layout
+
+        # Εικόνα πάνω
+        image_label = QLabel()
+        pixmap = QPixmap("images/square.jpg")
+        pixmap = pixmap.scaled(1000, 700, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        image_label.setPixmap(pixmap)
+        image_label.setAlignment(Qt.AlignCenter)
+        main_layout.addWidget(image_label)
+
+      
+        bottom_layout = QHBoxLayout()
+
+        list_widget = QListWidget()
+        list_widget.addItems(["Παζάρι", "Πανηγύρι", "Χορωδία"])
+        bottom_layout.addWidget(list_widget)
+        self.info_label = QLabel("Διάλεξε μια δραστηριότητα")
+        self.info_label.setWordWrap(True)
+        bottom_layout.addWidget(self.info_label)
+
+        main_layout.addLayout(bottom_layout)
+        back_button = QPushButton("Πίσω στον χάρτη")
+        back_button.clicked.connect(info_window.close)
+        main_layout.addWidget(back_button)
+
+        info_window.setLayout(main_layout)
+        
+        
+        list_widget.currentItemChanged.connect(self.show_square_info)
+
+        info_window.exec()
+
+
+    def play_sound(self, filename):
+        base_path = os.path.dirname(__file__)
+        file_path = os.path.join(base_path, "sounds", filename)
+        url = QUrl.fromLocalFile(file_path)
+        self.player.setMedia(QMediaContent(url))
+        self.player.play()
+    
+    def closeEvent(self, event):
+        if self.player.state() == QMediaPlayer.PlayingState:
+            self.player.stop()
+        event.accept()  
+
+    def show_square_info(self, current, previous):
+        self.player = QMediaPlayer() 
+
+        if not current:
+            return
+        text = current.text()
+        if "Παζάρι" in text:
+            self.info_label.setText("Ένα παραμύθι για το παζάρι...")
+            self.play_sound("bazaar.wav")
+        elif "Πανηγύρι" in text:
+            self.info_label.setText("Το μεγάλο πανηγύρι με μουσική και χορό!")
+            self.play_sound("choir.mp3")
+        elif "Χορωδία" in text:
+            self.info_label.setText("Η χορωδία τραγουδά παραδοσιακά τραγούδια.")
+        
+
+    
 
 # First Window which is the Welcome to the Castle City
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-
+        
         self.setWindowTitle("Αρχική Σελίδα")
         self.setMinimumSize(QSize(400, 300))
         self.setGeometry(200, 200, 1000, 600)
