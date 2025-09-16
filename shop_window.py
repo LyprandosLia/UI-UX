@@ -4,12 +4,20 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Signal, Qt
 import re  # for payment process
+# audio imports
+from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
+from PySide6.QtCore import QUrl
+import os
 
 class ClickableLabel(QLabel):
     clicked = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        self.player = QMediaPlayer()
+        self.audio_output = QAudioOutput()
+        self.player.setAudioOutput(self.audio_output)
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -20,6 +28,12 @@ class ClickableLabel(QLabel):
 class ShopWindow(QDialog):
     def __init__(self):
         super().__init__()
+
+        self.player = QMediaPlayer()
+        self.audio_output = QAudioOutput()
+        self.player.setAudioOutput(self.audio_output)
+        self.play_sound("violin.mp3")
+
         self.setWindowTitle("Κατάστημα Αναμνηστικών")
         self.resize(1000, 700)
         self.move(200, 150)
@@ -121,6 +135,21 @@ class ShopWindow(QDialog):
             item_layout.addWidget(buy_button)
 
             grid.addWidget(item_widget, row, col)
+
+    def play_sound(self, filename):
+        base_path = os.path.dirname(__file__)
+        file_path = os.path.join(base_path, "sounds", filename)
+        url = QUrl.fromLocalFile(file_path)
+        self.player.setSource(url)
+        self.player.play()
+
+    def stop_sound(self):
+        if self.player.playbackState() == QMediaPlayer.PlaybackState.PlayingState:
+            self.player.stop()
+
+    def closeEvent(self, event):
+        self.stop_sound()
+        super().closeEvent(event)
 
     def preview_item(self, item_name, img_path):
         from PySide6.QtWidgets import QDialog, QVBoxLayout
