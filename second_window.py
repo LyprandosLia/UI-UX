@@ -164,7 +164,7 @@ class SecondWindow(QMainWindow):
     def square(self):
         self.stop_background()
         info_window = QDialog()
-        info_window.setWindowTitle("Καλωσήρθατε στην κεντρική πλατεία!")
+        info_window.setWindowTitle("Καλώς ήρθατε στην κεντρική πλατεία!")
         info_window.resize(800, 600)
 
         main_layout = QVBoxLayout()  # Κύριο κάθετο layout

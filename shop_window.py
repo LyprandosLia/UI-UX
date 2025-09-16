@@ -61,7 +61,7 @@ class ShopWindow(QDialog):
         main_layout.setContentsMargins(20, 20, 20, 20)
         self.setLayout(main_layout)
 
-        welcome_label = QLabel("Καλωσήρθατε στο Κατάστημα Αναμνηστικών!")
+        welcome_label = QLabel("Καλώς ήρθατε στο Κατάστημα Αναμνηστικών!")
         welcome_label.setAlignment(Qt.AlignCenter)
         welcome_label.setStyleSheet("font-size: 15px; font-weight: bold; color: white;")
         main_layout.addWidget(welcome_label)
