@@ -21,7 +21,16 @@ def show_collection(map_window):
 
     info_window = InfoWindow(title, info_text, "images/collection.jpg",
                              width=900, height=700, scrollable=True)
+
     layout = info_window.content_layout
+    content_widget = layout.parentWidget()
+    content_widget.setAutoFillBackground(True)
+    content_widget.setStyleSheet("""
+        background-color: rgba(0, 0, 0, 100);  
+        border-radius: 10px;
+        padding: 10px;
+    """)
+
     insert_index = layout.count() - 1 if layout.count() > 0 else 0
     insert_index += 1
 
@@ -44,17 +53,17 @@ def show_collection(map_window):
 
     back_button = QPushButton("Πίσω στον χάρτη")
     back_button.setStyleSheet("""
-           QPushButton {
-               background-color: lightblue;
-               color: black;
-               font-weight: bold;
-               border-radius: 8px;
-               padding: 6px 12px;
-           }
-           QPushButton:hover {
-               background-color: #87CEFA;
-           }
-       """)
+        QPushButton {
+            background-color: lightblue;
+            color: black;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 6px 12px;
+        }
+        QPushButton:hover {
+            background-color: #87CEFA;
+        }
+    """)
     back_button.clicked.connect(info_window.close)
     layout.addWidget(back_button)
 

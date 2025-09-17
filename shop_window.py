@@ -9,6 +9,7 @@ from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtCore import QUrl
 import os
 
+
 class ClickableLabel(QLabel):
     clicked = Signal()
 
@@ -79,6 +80,24 @@ class ShopWindow(QDialog):
         container = QWidget()
         scroll.setWidget(container)
 
+        self.back_button = QPushButton("← Πίσω", self)
+        self.back_button.setStyleSheet("""
+            QPushButton {
+                background-color: rgba(50, 50, 50, 180);
+                color: white;
+                font-weight: bold;
+                border-radius: 5px;
+                padding: 5px;
+            }
+            QPushButton:hover {
+                background-color: rgba(70, 70, 70, 200);
+            }
+        """)
+        self.back_button.setFixedSize(60, 27)
+        self.back_button.move(20, 20)
+        self.back_button.clicked.connect(self.go_back)
+        self.back_button.raise_()
+
         # Grid layout (3 columns)
         grid = QGridLayout()
         grid.setSpacing(20)
@@ -146,6 +165,9 @@ class ShopWindow(QDialog):
     def stop_sound(self):
         if self.player.playbackState() == QMediaPlayer.PlaybackState.PlayingState:
             self.player.stop()
+
+    def go_back(self):
+        self.close()
 
     def closeEvent(self, event):
         self.stop_sound()

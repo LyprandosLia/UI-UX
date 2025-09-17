@@ -1,10 +1,12 @@
 from PySide6.QtWidgets import QPushButton
 from helper_functions.info_window import InfoWindow
+from helper_functions.collection_button import create_collection_button
 
 def show_castle(map_window):
     map_window.stop_background()
     map_window.play_sound("castle.mp3")
 
+    collection_title = "Κάστρο Γενικές Πληροφορίες:"
     title = "Πληροφορίες Κάστρου"
     info_text = (
         '<span style="font-weight: bold; color: white;">'
@@ -13,6 +15,7 @@ def show_castle(map_window):
     )
 
     info_window = InfoWindow(title, info_text, "images/corridor.jpg")
+    create_collection_button(info_window, collection_title, info_text)
     back_button = QPushButton("Πίσω στον χάρτη")
     back_button.setStyleSheet("""
            QPushButton {
