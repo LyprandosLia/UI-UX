@@ -1,7 +1,5 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QListWidget, QWidget, \
-    QLabel, \
-    QDialog, QFrame, QGridLayout, QScrollArea
-from PySide6.QtCore import QSize, Signal, Qt
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget
+from PySide6.QtCore import QSize
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QLabel
 import sys
@@ -11,7 +9,7 @@ from PySide6.QtCore import QUrl
 import os
 
 from shop_window import ShopWindow
-from second_window import SecondWindow
+from map_window import MapWindow
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -58,7 +56,7 @@ class MainWindow(QMainWindow):
         self.audio_output = QAudioOutput()
         self.player.setAudioOutput(self.audio_output)
 
-        self.second_window = SecondWindow(self)
+        self.second_window = MapWindow(self)
 
     def play_sound(self, filename, loop=False):
         base_path = os.path.dirname(__file__)
