@@ -1,0 +1,64 @@
+from PySide6.QtWidgets import QLabel, QPushButton
+from PySide6.QtGui import QPixmap
+from helper_functions.info_window import InfoWindow
+
+collection_items = []
+
+def add_to_collection(title, content):
+    if not any(item['title'] == title for item in collection_items):
+        collection_items.append({'title': title, 'content': content})
+
+def show_collection(map_window):
+    map_window.stop_background()
+    map_window.play_sound("collection.mp3")
+
+    title = "Προσωπική Συλλογή Γνώσεων"
+    info_text = (
+        '<span style="font-weight: bold; color: white;">'
+        'Εδώ βρίσκεται η προσωπική σου συλλογή από όλες τις γνώσεις που έχεις μάθει από την καστροπολιτεία μας!'
+        '</span>'
+    )
+
+    info_window = InfoWindow(title, info_text, "images/collection.jpg",
+                             width=900, height=700, scrollable=True)
+    layout = info_window.content_layout
+    insert_index = layout.count() - 1 if layout.count() > 0 else 0
+    insert_index += 1
+
+    if collection_items:
+        for item in collection_items:
+            title_label = QLabel(f"• {item['title']}")
+            title_label.setStyleSheet("color: white; font-weight: bold;")
+            content_label = QLabel(item['content'])
+            content_label.setWordWrap(True)
+            content_label.setStyleSheet("color: white;")
+            layout.insertWidget(insert_index, title_label)
+            insert_index += 1
+            layout.insertWidget(insert_index, content_label)
+            insert_index += 1
+    else:
+        empty_label = QLabel("Η συλλογή σου είναι κενή αυτήν την στιγμή. Πρόσθεσε κάτι!")
+        empty_label.setStyleSheet("color: white; font-weight: bold;")
+        layout.insertWidget(insert_index, empty_label)
+        insert_index += 1
+
+    back_button = QPushButton("Πίσω στον χάρτη")
+    back_button.setStyleSheet("""
+           QPushButton {
+               background-color: lightblue;
+               color: black;
+               font-weight: bold;
+               border-radius: 8px;
+               padding: 6px 12px;
+           }
+           QPushButton:hover {
+               background-color: #87CEFA;
+           }
+       """)
+    back_button.clicked.connect(info_window.close)
+    layout.addWidget(back_button)
+
+    info_window.finished.connect(map_window.stop_sound)
+    info_window.finished.connect(map_window.play_background)
+
+    info_window.exec()

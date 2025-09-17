@@ -1,15 +1,16 @@
-from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton
+from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton, QScrollArea, QWidget
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
 
-# Info window for displaying information about locations
 class InfoWindow(QDialog):
-    def __init__(self, title, info_text, bg_image=None):
+    def __init__(self, title, info_text, bg_image=None, width=800, height=600, scrollable=False):
         super().__init__()
         self.setWindowTitle(title)
-        self.setGeometry(300, 200, 800, 600)
-        layout = QVBoxLayout()
-        self.setLayout(layout)
+        self.setGeometry(300, 200, width, height)
+        self.setMinimumSize(width, height)
+
+        main_layout = QVBoxLayout()
+        self.setLayout(main_layout)
 
         if bg_image:
             self.bg_label = QLabel(self)
@@ -18,15 +19,21 @@ class InfoWindow(QDialog):
             self.bg_label.setScaledContents(True)
             self.bg_label.lower()
 
-        label = QLabel(info_text, self)
-        label.setWordWrap(True)
-        label.setAlignment(Qt.AlignCenter)
-        label.setStyleSheet("color: white;")
-        layout.addWidget(label)
+        if scrollable:
+            scroll_area = QScrollArea()
+            scroll_area.setWidgetResizable(True)
+            content_widget = QWidget()
+            self.content_layout = QVBoxLayout(content_widget)
+            scroll_area.setWidget(content_widget)
+            main_layout.addWidget(scroll_area)
+        else:
+            self.content_layout = main_layout
 
-        back_button = QPushButton("Πίσω στον χάρτη")
-        back_button.clicked.connect(self.close)
-        layout.addWidget(back_button)
+        info_label = QLabel(info_text)
+        info_label.setWordWrap(True)
+        info_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        info_label.setStyleSheet("color: white;")
+        self.content_layout.addWidget(info_label)
 
     def resizeEvent(self, event):
         if hasattr(self, "bg_label"):

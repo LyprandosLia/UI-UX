@@ -200,7 +200,6 @@ class ShopWindow(QDialog):
             bg_label.resize(dialog.size())
 
         dialog.resizeEvent = resize_event
-
         dialog.exec()
 
     def buy_item(self, item_name):

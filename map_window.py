@@ -11,6 +11,7 @@ import os
 from map_locations.fortress_window import show_fortress
 from map_locations.castle_window import show_castle
 from map_locations.square_window import show_square
+from collection_window import show_collection
 
 class MapWindow(QMainWindow):
     def __init__(self, main_window):
@@ -64,9 +65,10 @@ class MapWindow(QMainWindow):
         map_label.setFixedSize(800, 400)
         map_label.move((self.width() - map_label.width()) // 2, 100)
 
+        # All buttons
         # Castle Button
         castle_button = QPushButton("Κάστρο", map_label)
-        castle_button.setGeometry(135, 85, 80, 80)
+        castle_button.setGeometry(125, 85, 80, 80)
         castle_button.setFixedSize(60, 60)
         castle_button.setStyleSheet("""
             QPushButton {
@@ -84,7 +86,7 @@ class MapWindow(QMainWindow):
 
         # Square Button
         square_button = QPushButton("Πλατεία", map_label)
-        square_button.setGeometry(260, 210, 80, 80)
+        square_button.setGeometry(260, 220, 80, 80)
         square_button.setFixedSize(60, 60)
         square_button.setStyleSheet("""
                     QPushButton {
@@ -102,7 +104,7 @@ class MapWindow(QMainWindow):
 
         # Fortress Button
         fortress_button = QPushButton("Οχυρό", map_label)
-        fortress_button.setGeometry(350, 170, 80, 80)
+        fortress_button.setGeometry(340, 170, 80, 80)
         fortress_button.setFixedSize(60, 60)
         fortress_button.setStyleSheet("""
                             QPushButton {
@@ -117,6 +119,23 @@ class MapWindow(QMainWindow):
                             }
                         """)
         fortress_button.clicked.connect(lambda: show_fortress(self))
+
+        # Collection Button
+        collection_button = QPushButton("Συλλογή", map_label)
+        collection_button.setGeometry(670, 350, 100, 30)
+        collection_button.setStyleSheet("""
+            QPushButton {
+                background-color: #8e44ad;
+                color: white;
+                font-weight: bold;
+                border-radius: 10px;
+                border: 2px solid #2980b9;
+            }
+            QPushButton:hover {
+                background-color: #9b59b6;
+            }
+        """)
+        collection_button.clicked.connect(lambda: show_collection(self))
 
     def play_sound(self, filename, loop=False):
         base_path = os.path.dirname(__file__)

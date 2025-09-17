@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QListWidget, QLabel
+from PySide6.QtWidgets import QListWidget, QLabel, QPushButton
 from helper_functions.info_window import InfoWindow
 
 def show_square(map_window):
@@ -47,6 +47,21 @@ def show_square(map_window):
             map_window.play_sound("choir.mp3")
 
     list_widget.currentItemChanged.connect(show_square_info)
+    back_button = QPushButton("Πίσω στον χάρτη")
+    back_button.setStyleSheet("""
+           QPushButton {
+               background-color: lightblue;
+               color: black;
+               font-weight: bold;
+               border-radius: 8px;
+               padding: 6px 12px;
+           }
+           QPushButton:hover {
+               background-color: #87CEFA;
+           }
+       """)
+    back_button.clicked.connect(info_window.close)
+    info_window.content_layout.addWidget(back_button)
 
     info_window.finished.connect(map_window.stop_sound)
     info_window.finished.connect(map_window.play_background)
