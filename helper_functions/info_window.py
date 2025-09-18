@@ -6,7 +6,7 @@ class InfoWindow(QDialog):
     def __init__(self, title, info_text, bg_image=None, width=800, height=600, scrollable=False):
         super().__init__()
         self.setWindowTitle(title)
-        self.setGeometry(300, 200, width, height)
+        self.setGeometry(300, 300, width, height)
         self.setMinimumSize(width, height)
 
         main_layout = QVBoxLayout()
