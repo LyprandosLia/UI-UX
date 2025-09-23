@@ -4,12 +4,21 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Signal, Qt
 import re  # for payment process
+# audio imports
+from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
+from PySide6.QtCore import QUrl
+import os
+
 
 class ClickableLabel(QLabel):
     clicked = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        self.player = QMediaPlayer()
+        self.audio_output = QAudioOutput()
+        self.player.setAudioOutput(self.audio_output)
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -20,6 +29,12 @@ class ClickableLabel(QLabel):
 class ShopWindow(QDialog):
     def __init__(self):
         super().__init__()
+
+        self.player = QMediaPlayer()
+        self.audio_output = QAudioOutput()
+        self.player.setAudioOutput(self.audio_output)
+        self.play_sound("violin.mp3")
+
         self.setWindowTitle("Κατάστημα Αναμνηστικών")
         self.resize(1000, 700)
         self.move(200, 150)
@@ -47,7 +62,7 @@ class ShopWindow(QDialog):
         main_layout.setContentsMargins(20, 20, 20, 20)
         self.setLayout(main_layout)
 
-        welcome_label = QLabel("Καλωσήρθατε στο Κατάστημα Αναμνηστικών!")
+        welcome_label = QLabel("Καλώς ήρθατε στο Κατάστημα Αναμνηστικών!")
         welcome_label.setAlignment(Qt.AlignCenter)
         welcome_label.setStyleSheet("font-size: 15px; font-weight: bold; color: white;")
         main_layout.addWidget(welcome_label)
@@ -64,6 +79,24 @@ class ShopWindow(QDialog):
 
         container = QWidget()
         scroll.setWidget(container)
+
+        self.back_button = QPushButton("← Πίσω", self)
+        self.back_button.setStyleSheet("""
+            QPushButton {
+                background-color: rgba(50, 50, 50, 180);
+                color: white;
+                font-weight: bold;
+                border-radius: 5px;
+                padding: 5px;
+            }
+            QPushButton:hover {
+                background-color: rgba(70, 70, 70, 200);
+            }
+        """)
+        self.back_button.setFixedSize(60, 27)
+        self.back_button.move(20, 20)
+        self.back_button.clicked.connect(self.go_back)
+        self.back_button.raise_()
 
         # Grid layout (3 columns)
         grid = QGridLayout()
@@ -122,6 +155,24 @@ class ShopWindow(QDialog):
 
             grid.addWidget(item_widget, row, col)
 
+    def play_sound(self, filename):
+        base_path = os.path.dirname(__file__)
+        file_path = os.path.join(base_path, "sounds", filename)
+        url = QUrl.fromLocalFile(file_path)
+        self.player.setSource(url)
+        self.player.play()
+
+    def stop_sound(self):
+        if self.player.playbackState() == QMediaPlayer.PlaybackState.PlayingState:
+            self.player.stop()
+
+    def go_back(self):
+        self.close()
+
+    def closeEvent(self, event):
+        self.stop_sound()
+        super().closeEvent(event)
+
     def preview_item(self, item_name, img_path):
         from PySide6.QtWidgets import QDialog, QVBoxLayout
         dialog = QDialog(self)
@@ -171,7 +222,6 @@ class ShopWindow(QDialog):
             bg_label.resize(dialog.size())
 
         dialog.resizeEvent = resize_event
-
         dialog.exec()
 
     def buy_item(self, item_name):
