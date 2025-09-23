@@ -69,7 +69,7 @@ def show_square(map_window):
                 '</span>'
             )
             map_window.play_sound("bazaar.mp3")
-            collection_title = "Πληροφορίες Παζαριού:"
+            collection_title = "Το μυθικό παζάρι"
         elif "Πανηγύρι" in text:
             info_label.setText(
                 '<span style="color: white; background-color: black; padding: 5px;">'
@@ -77,7 +77,7 @@ def show_square(map_window):
                 '</span>'
             )
             map_window.play_sound("festival.mp3")
-            collection_title = "Πληροφορίες Πανηγυριού:"
+            collection_title = "Το πασίγνωστο πανηγύρι"
         elif "Χορωδία" in text:
             info_label.setText(
                 '<span style="color: white; background-color: black; padding: 5px;">'
@@ -85,7 +85,7 @@ def show_square(map_window):
                 '</span>'
             )
             map_window.play_sound("choir.mp3")
-            collection_title = "Πληροφορίες Χορωδίας:"
+            collection_title = "Η ονειρική χορωδία"
 
         collection_button = create_collection_button(info_window, collection_title, info_label.text())
         info_window.content_layout.addWidget(collection_button)

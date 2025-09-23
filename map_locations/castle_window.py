@@ -6,7 +6,7 @@ def show_castle(map_window):
     map_window.stop_background()
     map_window.play_sound("castle.mp3")
 
-    collection_title = "Κάστρο Γενικές Πληροφορίες:"
+    collection_title = "Το Βασιλικό Κάστρο"
     title = "Πληροφορίες Κάστρου"
     info_text = (
         '<span style="font-weight: bold; color: white;">'

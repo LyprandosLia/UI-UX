@@ -6,7 +6,7 @@ def show_fortress(map_window):
     map_window.stop_background()
     map_window.play_sound("fortress.mp3")
 
-    collection_title = "Οχυρό Γενικές Πληροφορίες:"
+    collection_title = "Η άμυνα της καστροπολιτείας, το Οχυρό"
     title = "Βρισκόμαστε στο οχυρό!"
     info_text = (
         '<span style="font-weight: bold; color: white;">'
