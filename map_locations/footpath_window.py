@@ -10,11 +10,12 @@ def show_footpath(map_window):
     collection_title = "Το Αρχαίο Μονοπάτι των Φρουρών"
     title = "Το μονοπάτι προς το Κάστρο"
     info_text = (
-         '<span style="font-weight: bold; color: white;">'
+        '<span style="color: #FFFFFF  ; font-weight: bold; font-size:16x;">'
         "Λέγεται πως το μονοπάτι που οδηγεί στο κάστρο δεν είναι απλώς ένας δρόμος. Πάνω σε πέτρες φθαρμένες από τα χρόνια, οι φρουροί του παρελθόντος έχουν αφήσει ψιθύρους και σημάδια που μόνο οι τολμηροί μπορούν να καταλάβουν. Καθώς περπατάς ανάμεσα στα δέντρα και τα πυκνά βάτα, νιώθεις ότι τα βλέμματα των παλιών φρουρών σε συνοδεύουν και ότι κάθε στροφή μπορεί να αποκαλύψει μυστικά κρυμμένα από αιώνες. Το μονοπάτι δεν οδηγεί μόνο στο κάστρο· σε καλεί να ανακαλύψεις τις ιστορίες που οι τοίχοι δεν μπορούν να πουν."
         '</span>'
     )
     info_window = InfoWindow(title, info_text, "images/footpath.jpg")
+    info_window.content_layout.addStretch(1)
     create_collection_button(info_window, collection_title, info_text)
     back_button = QPushButton("Πίσω στον χάρτη")
     back_button.setStyleSheet("""

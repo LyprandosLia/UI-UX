@@ -56,11 +56,13 @@ class ShopWindow(QDialog):
             "Χρυσό Κύπελλο": "Αντίγραφο πολυτελούς μεσαιωνικού κυπέλλου.\n\nΤιμή: 30€",
             "Συλλεκτικό Βιβλίο": "Συλλεκτικό βιβλίο με την ιστορία της καστροπολιτείας μας.\n\nΤιμή: 35€"
         }
+        
 
         # Main layout
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(20, 20, 20, 20)
         self.setLayout(main_layout)
+        
 
         welcome_label = QLabel("Καλώς ήρθατε στο Κατάστημα Αναμνηστικών!")
         welcome_label.setAlignment(Qt.AlignCenter)
@@ -128,6 +130,7 @@ class ShopWindow(QDialog):
             item_widget.setStyleSheet(
                 "background: rgba(0, 0, 0, 200); border-radius: 10px; padding: 5px;"
             )
+            
 
             img_label = ClickableLabel()
             pixmap = QPixmap(img)
@@ -147,7 +150,11 @@ class ShopWindow(QDialog):
 
             buy_button = QPushButton("Αγορά")
             buy_button.clicked.connect(lambda _, n=name: self.buy_item(n))
-
+            buy_button.setStyleSheet("""
+            QPushButton {
+                color: white;   /* Μόνο το κείμενο γίνεται λευκό */
+            }
+           """)
             item_layout.addWidget(img_label)
             item_layout.addWidget(name_label)
             item_layout.addWidget(price_label)
@@ -198,13 +205,14 @@ class ShopWindow(QDialog):
 
         name_label = QLabel(item_name)
         name_label.setAlignment(Qt.AlignCenter)
-        name_label.setStyleSheet("font-size: 16px; font-weight: bold;")
+        name_label.setStyleSheet("color: white; font-size: 16px; font-weight: bold;")
         layout.addWidget(name_label)
 
         desc_text = self.descriptions.get(item_name, "Δεν υπάρχει διαθέσιμη περιγραφή για αυτό το αντικείμενο.")
         desc = QLabel(desc_text)
         desc.setWordWrap(True)
         desc.setAlignment(Qt.AlignCenter)
+        desc.setStyleSheet("color: white;")
         layout.addWidget(desc)
 
         buy_button = QPushButton("Αγορά")
