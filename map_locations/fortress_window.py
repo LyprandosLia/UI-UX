@@ -1,6 +1,9 @@
-from PySide6.QtWidgets import QPushButton
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QPushButton, QHBoxLayout
 from helper_functions.info_window import InfoWindow
 from helper_functions.collection_button import create_collection_button
+
+from characters.guard.guard import GuardWindow
 
 def show_fortress(map_window):
     map_window.stop_background()
@@ -16,6 +19,48 @@ def show_fortress(map_window):
 
     info_window = InfoWindow(title, info_text, "images/fortress.jpg")
     create_collection_button(info_window, collection_title, info_text)
+
+    guard_button = QPushButton("Φρουρός")
+    guard_button.setFixedSize(100, 40)  # μικρό μέγεθος
+    guard_button.setStyleSheet("""
+        QPushButton {
+            background-color: #f4e9b8;
+            color: #2c2c2c;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+        QPushButton:hover {
+            background-color: #eadf9f;
+        }
+    """)
+
+
+    button_row = QHBoxLayout()
+    button_row.addWidget(guard_button, alignment=Qt.AlignLeft)
+
+    info_window.content_layout.addLayout(button_row)
+
+    info_window.content_layout.addWidget(guard_button)
+
+
+    def open_guard():
+
+        try:
+            map_window.stop_sound()
+        except Exception:
+            pass
+
+
+        info_window.guard_window = GuardWindow()
+        info_window.guard_window.setAttribute(Qt.WA_DeleteOnClose, True)
+        info_window.guard_window.setWindowModality(Qt.ApplicationModal)
+
+        info_window.guard_window.destroyed.connect(lambda: map_window.play_sound("fortress.mp3"))
+        info_window.guard_window.show()
+
+    guard_button.clicked.connect(open_guard)
+
+
     back_button = QPushButton("Πίσω στον χάρτη")
     back_button.setStyleSheet("""
         QPushButton {
