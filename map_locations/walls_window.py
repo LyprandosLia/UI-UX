@@ -70,13 +70,13 @@ def show_walls(map_window):
             "- Πατήστε 'Πίσω στον χάρτη' για να επιστρέψετε στον χάρτη.\n"
             "- Πατήστε 'Προσθήκη' ώστε να συλλέξετε πληροφορίες για τα τείχη."
         )
+
     def open_archer():
 
         try:
             map_window.stop_sound()
         except Exception:
             pass
-
 
         info_window.archer_window = ArcherWindow()
         info_window.archer_window.setAttribute(Qt.WA_DeleteOnClose, True)
