@@ -63,7 +63,6 @@ def show_castle(map_window):
     """)
     help_button.clicked.connect(lambda: show_walls_help(info_window))
 
-   
     top_layout = QHBoxLayout()
     top_layout.addStretch()       
     top_layout.addWidget(help_button)
@@ -80,8 +79,6 @@ def show_castle(map_window):
             "- Πατήστε 'Πίσω στον χάρτη' για να επιστρέψετε στον χάρτη.\n"
             "- Πατήστε 'Προσθήκη' ώστε να συλλέξετε πληροφορίες για το κάστρο."
         )
-     
-
     
     def open_cook():
 
@@ -93,11 +90,8 @@ def show_castle(map_window):
         info_window.cook_window = CookWindow()
         info_window.cook_window.setAttribute(Qt.WA_DeleteOnClose, True)
         info_window.cook_window.setWindowModality(Qt.ApplicationModal)
-        # Αν το CookWindow είναι QWidget, αφήνουμε show() (modal δεν έχει νόημα)
         info_window.cook_window.destroyed.connect(lambda: map_window.play_sound("castle.mp3"))
         info_window.cook_window.show()
-
-
 
     def open_king():
 
@@ -105,7 +99,6 @@ def show_castle(map_window):
             map_window.stop_sound()
         except Exception:
             pass
-
 
         info_window.king_window = KingWindow()
         info_window.king_window.setAttribute(Qt.WA_DeleteOnClose, True)

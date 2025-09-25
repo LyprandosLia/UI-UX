@@ -34,14 +34,11 @@ def show_fortress(map_window):
         }
     """)
 
-
     button_row = QHBoxLayout()
     button_row.addWidget(guard_button, alignment=Qt.AlignLeft)
 
     info_window.content_layout.addLayout(button_row)
-
     info_window.content_layout.addWidget(guard_button)
-
 
     def open_guard():
 
@@ -49,7 +46,6 @@ def show_fortress(map_window):
             map_window.stop_sound()
         except Exception:
             pass
-
 
         info_window.guard_window = GuardWindow()
         info_window.guard_window.setAttribute(Qt.WA_DeleteOnClose, True)
@@ -59,7 +55,6 @@ def show_fortress(map_window):
         info_window.guard_window.show()
 
     guard_button.clicked.connect(open_guard)
-
 
     back_button = QPushButton("Πίσω στον χάρτη")
     back_button.setStyleSheet("""
@@ -99,10 +94,6 @@ def show_fortress(map_window):
     top_layout.addWidget(help_button)
     info_window.content_layout.insertLayout(0, top_layout)  
     info_window.exec()
-    
-
-   
-   
 
 def show_walls_help(window):
     from PySide6.QtWidgets import QMessageBox
