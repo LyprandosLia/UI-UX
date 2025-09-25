@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget,QMenuBar,QMessageBox
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QLabel
@@ -58,6 +58,22 @@ class MainWindow(QMainWindow):
         self.player.setAudioOutput(self.audio_output)
 
         self.second_window = MapWindow(self)
+        # On-line help
+        menubar=self.menuBar()
+        help_menu = menubar.addMenu("Help")
+        help_action = help_menu.addAction("Help")
+        help_action.triggered.connect(self.show_help)
+
+
+    def show_help(self):
+        QMessageBox.information(
+            self,
+            "Οδηγίες Χρήσης",
+            "Βασικές προϋποθέσεις:\n- Python 3.10+\n- Εγκατάσταση PySide6 με pip.\n Για αναπαραγωγή ήχου, βεβαιωθείτε ότι υποστηρίζονται MP3/WAV.\n"
+            "Τρόπος Χρήσης:\n- Πατήστε 'Είσοδος στην καστροπολιτεία' για να πλοηγηθείτε σε αυτή .\n- "
+            "Πατήστε 'Κατάστημα Αναμνηστικών' για κάνετε τις αγορές σας."
+        )
+
 
     def play_sound(self, filename, loop=False):
         base_path = os.path.dirname(__file__)
@@ -107,7 +123,9 @@ class MainWindow(QMainWindow):
         self.stop_sound()
         event.accept()
 
+
 if __name__ == "__main__":
+
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()

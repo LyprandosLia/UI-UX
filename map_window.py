@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow, QPushButton, QWidget
+from PySide6.QtWidgets import QMainWindow, QPushButton, QWidget,QMessageBox
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QLabel
@@ -168,7 +168,21 @@ class MapWindow(QMainWindow):
             }
         """)
         collection_button.clicked.connect(lambda: show_collection(self))
+        #Οnline help
+        menubar=self.menuBar()
+        help_menu = menubar.addMenu("Help")
+        help_action = help_menu.addAction("Οδηγίες πλόγησης")
+        help_action.triggered.connect(self.show_help)
 
+    def show_help(self):
+      QMessageBox.information(
+        self,
+        "Οδηγίες πλόγησης στην Καστροπολιτεία",
+        "Επιλέξετε μια περιοχή από τον χάρτη, πιέζοντας το αντίστοιχο κουμπί.\n"
+        "Συλλέξτε πληροφορίες για την περιόχη .\n\n"
+        "Πατήστε το κουμπί 'Συλλογή' για να δείτε τα αντικείμενα που έχετε συλλέξει.\n"
+        "Πατήστε το κουμπί 'Πίσω' για να επιστρέψετε στην αρχική σελίδα."
+    )
     def play_sound(self, filename, loop=False):
         base_path = os.path.dirname(__file__)
         file_path = os.path.join(base_path, "sounds", filename)

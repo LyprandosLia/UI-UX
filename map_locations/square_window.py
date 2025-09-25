@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QListWidget, QLabel, QPushButton, QScrollArea, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QListWidget, QLabel, QPushButton, QScrollArea, QVBoxLayout, QWidget,QHBoxLayout
 from helper_functions.info_window import InfoWindow
 from PySide6.QtCore import Qt
 from helper_functions.collection_button import create_collection_button
@@ -111,4 +111,38 @@ def show_square(map_window):
 
     info_window.finished.connect(map_window.stop_sound)
     info_window.finished.connect(map_window.play_background)
+    help_button = QPushButton("Help")
+    help_button.setFixedSize(60, 27)
+    help_button.setStyleSheet("""
+        QPushButton {
+            background-color: rgba(50, 50, 50, 180);
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        QPushButton:hover {
+            background-color: rgba(70, 70, 70, 200);
+        }
+    """)
+    help_button.clicked.connect(lambda: show_walls_help(info_window))
+
+   
+    top_layout = QHBoxLayout()
+    top_layout.addStretch()       
+    top_layout.addWidget(help_button)
+    info_window.content_layout.insertLayout(0, top_layout)  
     info_window.exec()
+    
+def show_walls_help(window):
+        from PySide6.QtWidgets import QMessageBox
+        QMessageBox.information(
+            window,
+            "Βοήθεια – Κεντρική Πλατεία",
+            "Σε αυτή την οθόνη μπορείτε να δείτε την κεντρική πλατεία του κάστρου.\n\n"
+            "- Πατήστε 'Παζάρι' για να μάθετε περισσότερα για το παζάρι.\n"
+            "- Πατήστε 'Πανηγύρι' για να δείτε περισσότερα για το πανηγύρι.\n"
+            "- Πατήστε 'Χορώδια' για να δείτε περισσότερα για την χορώδια και να ακούσετε την μελώδια της.\n"
+            "- Πατήστε 'Πίσω στον χάρτη' για να επιστρέψετε στον χάρτη.\n"
+            "- Πατήστε 'Προσθήκη' ώστε να συλλέξετε πληροφορίες για το κάστρο."
+        )

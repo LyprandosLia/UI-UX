@@ -162,6 +162,23 @@ class ShopWindow(QDialog):
 
             grid.addWidget(item_widget, row, col)
 
+            # Online help
+            help_button = QPushButton("Help", self)
+            help_button.setStyleSheet("color: white; background-color: gray;")
+            help_button.move(850, 20)  
+            help_button.clicked.connect(self.show_help)
+            help_button.raise_()
+
+    def show_help(self):
+        QMessageBox.information(
+            self,
+        "Οδηγίες Αγοράς στο Κατάστημα Αναμνηστικών",
+        """Επιλέξτε το αντικείμενο της αρεσκείας σας.
+        Πατήστε πάνω στο αντικείμενο ώστε να δείτε την περιγραφή του.
+
+        Πατήστε 'Αγορά' και εισάγετε τα στοιχεία χρέωσης.
+        ΠΡΟΣΟΧΗ: Φροντίστε να συμπληρώσετε όλα τα πεδία τα πέδια χρέωσης."""
+    )
     def play_sound(self, filename):
         base_path = os.path.dirname(__file__)
         file_path = os.path.join(base_path, "sounds", filename)

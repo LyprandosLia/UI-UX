@@ -32,15 +32,39 @@ def show_walls(map_window):
             background-color: #eadf9f;
         }
     """)
+    #Online help button
+    help_button = QPushButton("Help")
+    help_button.setFixedSize(60, 27)
+    help_button.setStyleSheet("""
+        QPushButton {
+            background-color: rgba(50, 50, 50, 180);
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        QPushButton:hover {
+            background-color: rgba(70, 70, 70, 200);
+        }
+    """)
+    help_button.clicked.connect(lambda: show_walls_help(info_window))
 
+   
+    top_layout = QHBoxLayout()
+    top_layout.addStretch()       
+    top_layout.addWidget(help_button)
+    info_window.content_layout.insertLayout(0, top_layout)  
 
-    button_row = QHBoxLayout()
-    button_row.addWidget(archer_button, alignment=Qt.AlignLeft)
-
-    info_window.content_layout.addLayout(button_row)
-
-    info_window.content_layout.addWidget(archer_button)
-
+    def show_walls_help(window):
+        from PySide6.QtWidgets import QMessageBox
+        QMessageBox.information(
+            window,
+            "Βοήθεια – Τείχη Κάστρου",
+            "Σε αυτή την οθόνη μπορείτε να δείτε τα ιστορικά τείχη του Κάστρου.\n\n"
+            "- Πατήστε 'Τοξότρια' για να δείτε περισσότερα για την τοξότρια.\n"
+            "- Πατήστε 'Πίσω στον χάρτη' για να επιστρέψετε στον χάρτη.\n"
+            "- Πατήστε 'Προσθήκη' ώστε να συλλέξετε πληροφορίες για τα τείχη."
+        )
     def open_archer():
 
         try:

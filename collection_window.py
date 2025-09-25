@@ -80,7 +80,7 @@ def show_collection(map_window):
     """)
     back_button.clicked.connect(info_window.close)
     layout.addWidget(back_button)
-
+    
     info_window.finished.connect(map_window.stop_sound)
     info_window.finished.connect(map_window.play_background)
 

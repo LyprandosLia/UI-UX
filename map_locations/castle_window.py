@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QPushButton, QVBoxLayout
+from PySide6.QtWidgets import QPushButton, QVBoxLayout,QHBoxLayout
 from helper_functions.info_window import InfoWindow
 from helper_functions.collection_button import create_collection_button
 
@@ -41,14 +41,48 @@ def show_castle(map_window):
 
     cook_button.setStyleSheet(common_btn_css)
     king_button.setStyleSheet(common_btn_css)
-
+    
     buttons_col = QVBoxLayout()
     buttons_col.setSpacing(8)
     buttons_col.addWidget(cook_button, alignment=Qt.AlignLeft)  # ο Μάγειρας πάνω
     buttons_col.addWidget(king_button, alignment=Qt.AlignLeft)
     info_window.content_layout.addLayout(buttons_col)
+    help_button = QPushButton("Help")
+    help_button.setFixedSize(60, 27)
+    help_button.setStyleSheet("""
+        QPushButton {
+            background-color: rgba(50, 50, 50, 180);
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        QPushButton:hover {
+            background-color: rgba(70, 70, 70, 200);
+        }
+    """)
+    help_button.clicked.connect(lambda: show_walls_help(info_window))
 
+   
+    top_layout = QHBoxLayout()
+    top_layout.addStretch()       
+    top_layout.addWidget(help_button)
+    info_window.content_layout.insertLayout(0, top_layout)  
 
+    def show_walls_help(window):
+        from PySide6.QtWidgets import QMessageBox
+        QMessageBox.information(
+            window,
+            "Βοήθεια – Κάστρο",
+            "Σε αυτή την οθόνη μπορείτε να δείτε το κάστρο της καστροπολιτείας.\n\n"
+            "- Πατήστε 'Μαγείρας' για να δείτε περισσότερα για τον μάγειρα.\n"
+            "- Πατήστε 'Βασιλιάς' για να δείτε περισσότερα για τον βασιλιά.\n"
+            "- Πατήστε 'Πίσω στον χάρτη' για να επιστρέψετε στον χάρτη.\n"
+            "- Πατήστε 'Προσθήκη' ώστε να συλλέξετε πληροφορίες για το κάστρο."
+        )
+     
+
+    
     def open_cook():
 
         try:
