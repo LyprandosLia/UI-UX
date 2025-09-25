@@ -118,6 +118,21 @@ class MainWindow(QMainWindow):
         self.stop_sound()
         event.accept()
 
+    def resizeEvent(self, event): 
+        """Καλείται κάθε φορά που αλλάζει μέγεθος το παράθυρο."""
+        self.bg_label.setGeometry(0, 0, self.width(), self.height())  
+        self.update_button_positions()
+        super().resizeEvent(event)
+    def update_button_positions(self):
+        spacing = 10
+        total_height = self.enter_button.height() + self.shop_button.height() + spacing
+
+        center_x = (self.width() - self.enter_button.width()) // 2
+        start_y = (self.height() - total_height) // 2
+
+        self.shop_button.move(center_x, start_y)
+        self.enter_button.move(center_x, start_y + self.shop_button.height() + spacing)
+
 
 if __name__ == "__main__":
 
