@@ -228,13 +228,12 @@ class MapWindow(QMainWindow):
             self.player.stop()
         event.accept()
 
-    def resizeEvent(self, event):  # ⚡ ΝΕΟ: override της resizeEvent
-        """Καλείται κάθε φορά που αλλάζει μέγεθος το παράθυρο."""
-        self.bg_label.setGeometry(0, 0, self.width(), self.height())  # ⚡ ΑΛΛΑΓΗ: τεντώνουμε το background
-        self.center_map()  # ⚡ ΑΛΛΑΓΗ: ξανακεντράρουμε το map_label
+    def resizeEvent(self, event):
+        self.bg_label.setGeometry(0, 0, self.width(), self.height())
+        self.center_map()
         super().resizeEvent(event)
 
-    def center_map(self):  # ⚡ ΝΕΟ: βοηθητική συνάρτηση για να βάζει το map_label στο κέντρο
+    def center_map(self):
         """Τοποθετεί τον χάρτη στο κέντρο του παραθύρου."""
         x = (self.width() - self.map_label.width()) // 2
         y = (self.height() - self.map_label.height()) // 2

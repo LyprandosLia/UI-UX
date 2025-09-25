@@ -23,13 +23,11 @@ class MainWindow(QMainWindow):
         centralWidget = QWidget()
         self.setCentralWidget(centralWidget)
 
-        # Background
         self.bg_label = QLabel(centralWidget)
         self.bg_label.setPixmap(QPixmap("images/castle.jpg"))
         self.bg_label.setScaledContents(True)
         self.bg_label.setGeometry(0, 0, self.width(), self.height())
 
-        # Buttons
         self.shop_button = QPushButton("Κατάστημα Αναμνηστικών", centralWidget)
         self.shop_button.setFixedSize(250, 40)
         self.shop_button.setStyleSheet("""
@@ -51,7 +49,6 @@ class MainWindow(QMainWindow):
         self.enter_button.clicked.connect(self.open_second_window)
 
         self.update_button_positions()
-        
 
         self.player = QMediaPlayer()
         self.audio_output = QAudioOutput()
@@ -64,7 +61,6 @@ class MainWindow(QMainWindow):
         help_action = help_menu.addAction("Help")
         help_action.triggered.connect(self.show_help)
 
-
     def show_help(self):
         QMessageBox.information(
             self,
@@ -73,7 +69,6 @@ class MainWindow(QMainWindow):
             "Τρόπος Χρήσης:\n- Πατήστε 'Είσοδος στην καστροπολιτεία' για να πλοηγηθείτε σε αυτή .\n- "
             "Πατήστε 'Κατάστημα Αναμνηστικών' για κάνετε τις αγορές σας."
         )
-
 
     def play_sound(self, filename, loop=False):
         base_path = os.path.dirname(__file__)

@@ -1,12 +1,13 @@
 from pathlib import Path
 from PySide6.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QPushButton, QLabel
+    QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QHBoxLayout
 )
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 import sys
 import random
+from helper_functions.collection_button import create_collection_button
 
 class KingWindow(QWidget):
     def __init__(self):
@@ -14,9 +15,7 @@ class KingWindow(QWidget):
         self.setWindowTitle("Ο Βασιλιάς του Κάστρου")
         self.setMinimumSize(400, 400)
 
-
         layout = QVBoxLayout()
-
 
         self.king_label = QLabel()
         pixmap = QPixmap("characters/king/king.png")
@@ -25,32 +24,26 @@ class KingWindow(QWidget):
             self.king_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.king_label)
 
-
         self.story_button = QPushButton("Διάβασε την ιστορία μου")
         self.story_button.clicked.connect(self.tell_story)
         layout.addWidget(self.story_button)
-
 
         self.story_label = QLabel("")
         self.story_label.setWordWrap(True)
         layout.addWidget(self.story_label)
 
-
-        self.audio_button = QPushButton("Άκουσε τη φωνή μου")
+        self.audio_button = QPushButton("Μίλησέ μου")
         self.audio_button.clicked.connect(self.play_audio)
         layout.addWidget(self.audio_button)
-
 
         self.sword_button = QPushButton("Σπαθί")
         self.sword_button.clicked.connect(self.show_sword_action)
         layout.addWidget(self.sword_button)
 
-
         self.sword_label = QLabel("Το σπαθί του βασιλιά λάμπει στο φως...")
         layout.addWidget(self.sword_label)
 
         self.setLayout(layout)
-
 
         self.player = QMediaPlayer()
         self.audio_output = QAudioOutput()
@@ -64,13 +57,20 @@ class KingWindow(QWidget):
         ]
 
     def tell_story(self):
-        story = (
+        self.story = (
             "Είμαι ο βασιλιάς αυτού του κάστρου. "
             "Εδώ και τριάντα χρόνια κυβερνώ με δικαιοσύνη και σοφία. "
             "Η σχέση μου με τους φρουρούς, τους μάγειρες, τις τοξότριες "
             "είναι γεμάτη σεβασμό και εμπιστοσύνη."
         )
-        self.story_label.setText(story)
+        self.story_label.setText(self.story)
+
+        if not hasattr(self, 'collect_button'):
+            self.collect_button = create_collection_button(self, "Ο Βασιλιάς του Κάστρου", self.story)
+            h_layout = QHBoxLayout()
+            h_layout.addStretch()
+            h_layout.addWidget(self.collect_button)
+            self.layout().addLayout(h_layout)
 
     def play_audio(self):
 
@@ -86,7 +86,6 @@ class KingWindow(QWidget):
             return
 
         self.player.setSource(QUrl.fromLocalFile(str(audio_path)))
-
 
         try:
             self.audio_output.setVolume(0.8)

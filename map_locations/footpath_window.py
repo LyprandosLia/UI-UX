@@ -17,11 +17,7 @@ def show_footpath(map_window):
         '</span>'
     )
     info_window = InfoWindow(title, info_text, "images/footpath.jpg")
-    info_window.content_layout.addStretch(1)
-
-
     create_collection_button(info_window, collection_title, info_text)
-
 
     scarecrow_button = QPushButton("Σκιάχτρο")
     scarecrow_button.setFixedSize(100, 40)
@@ -37,14 +33,11 @@ def show_footpath(map_window):
         }
     """)
 
-
     button_row = QHBoxLayout()
     button_row.addWidget(scarecrow_button, alignment=Qt.AlignLeft)
 
     info_window.content_layout.addLayout(button_row)
-
     info_window.content_layout.addWidget(scarecrow_button)
-
 
     def open_scarecrow():
 
@@ -52,7 +45,6 @@ def show_footpath(map_window):
             map_window.stop_sound()
         except Exception:
             pass
-
 
         info_window.scarecrow_window = ScarecrowWindow()
         info_window.scarecrow_window.setAttribute(Qt.WA_DeleteOnClose, True)
@@ -62,8 +54,6 @@ def show_footpath(map_window):
         info_window.scarecrow_window.show()
 
     scarecrow_button.clicked.connect(open_scarecrow)
-
-
 
     back_button = QPushButton("Πίσω στον χάρτη")
     back_button.setStyleSheet("""
@@ -99,13 +89,11 @@ def show_footpath(map_window):
     """)
     help_button.clicked.connect(lambda: show_walls_help(info_window))
 
-   
     top_layout = QHBoxLayout()
-    top_layout.addStretch()       
+    top_layout.addStretch()
     top_layout.addWidget(help_button)
-    info_window.content_layout.insertLayout(0, top_layout)  
+    info_window.content_layout.insertLayout(0, top_layout)
     info_window.exec()
-    
 
 def show_walls_help(window):
         from PySide6.QtWidgets import QMessageBox

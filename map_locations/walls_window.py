@@ -20,7 +20,7 @@ def show_walls(map_window):
     create_collection_button(info_window, collection_title, info_text)
 
     archer_button = QPushButton("Τοξότρια")
-    archer_button.setFixedSize(100, 40)  # μικρό μέγεθος
+    archer_button.setFixedSize(100, 40)
     archer_button.setStyleSheet("""
         QPushButton {
             background-color: #f4e9b8;
@@ -32,7 +32,13 @@ def show_walls(map_window):
             background-color: #eadf9f;
         }
     """)
-    #Online help button
+
+    button_row = QHBoxLayout()
+    button_row.addWidget(archer_button, alignment=Qt.AlignLeft)
+
+    info_window.content_layout.addLayout(button_row)
+    info_window.content_layout.addWidget(archer_button)
+
     help_button = QPushButton("Help")
     help_button.setFixedSize(60, 27)
     help_button.setStyleSheet("""
@@ -49,7 +55,6 @@ def show_walls(map_window):
     """)
     help_button.clicked.connect(lambda: show_walls_help(info_window))
 
-   
     top_layout = QHBoxLayout()
     top_layout.addStretch()       
     top_layout.addWidget(help_button)
@@ -81,7 +86,6 @@ def show_walls(map_window):
         info_window.archer_window.show()
 
     archer_button.clicked.connect(open_archer)
-
 
     back_button = QPushButton("Πίσω στον χάρτη")
     back_button.setStyleSheet("""

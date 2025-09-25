@@ -7,6 +7,7 @@ from PySide6.QtCore import Qt, QUrl
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 import sys
 import random
+from helper_functions.collection_button import create_collection_button
 
 class GuardWindow(QWidget):
     def __init__(self):
@@ -14,9 +15,7 @@ class GuardWindow(QWidget):
         self.setWindowTitle("Ο Φρουρός του Κάστρου")
         self.setMinimumSize(400, 400)
 
-
         layout = QVBoxLayout()
-
 
         self.guard_label = QLabel()
         pixmap = QPixmap("characters/guard/guard.png")
@@ -25,21 +24,17 @@ class GuardWindow(QWidget):
             self.guard_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.guard_label)
 
-
         self.story_button = QPushButton("Διάβασε την ιστορία μου")
         self.story_button.clicked.connect(self.tell_story)
         layout.addWidget(self.story_button)
 
-
-        self.audio_button = QPushButton("Άκουσε τη φωνή μου")
+        self.audio_button = QPushButton("Μίλησέ μου")
         self.audio_button.clicked.connect(self.play_audio)
         layout.addWidget(self.audio_button)
-
 
         self.story_label = QLabel("")
         self.story_label.setWordWrap(True)
         layout.addWidget(self.story_label)
-
 
         activity_layout = QHBoxLayout()
         self.helmet_button = QPushButton("Κράνος")
@@ -56,12 +51,10 @@ class GuardWindow(QWidget):
 
         layout.addLayout(activity_layout)
 
-
         self.activity_label = QLabel("Επίλεξε τον εξοπλισμό μου!")
         layout.addWidget(self.activity_label)
 
         self.setLayout(layout)
-
 
         self.player = QMediaPlayer()
         self.audio_output = QAudioOutput()
@@ -73,15 +66,21 @@ class GuardWindow(QWidget):
             self._here / "guard_voice2.mp3",
         ]
 
-
     def tell_story(self):
-        story = (
+        self.story = (
             "Είμαι ο φρουρός του κάστρου. Κάθε νύχτα περιπολώ το οχυρό "
             "για να προστατεύσω τον διοικητή και τον λαό. "
             "Με την πανοπλία μου και την πίστη μου, είμαι έτοιμος να "
             "αποκρούσω κάθε εισβολέα."
         )
-        self.story_label.setText(story)
+        self.story_label.setText(self.story)
+
+        if not hasattr(self, 'collect_button'):
+            self.collect_button = create_collection_button(self, "Ο Φρουρός του Κάστρου", self.story)
+            h_layout = QHBoxLayout()
+            h_layout.addStretch()
+            h_layout.addWidget(self.collect_button)
+            self.layout().addLayout(h_layout)
 
     def play_audio(self):
         try:
@@ -97,7 +96,6 @@ class GuardWindow(QWidget):
 
         self.player.setSource(QUrl.fromLocalFile(str(audio_path)))
 
-
         try:
             self.audio_output.setVolume(0.8)
         except Exception:
@@ -106,7 +104,7 @@ class GuardWindow(QWidget):
         self.player.play()
 
     def select_item(self, item):
-        self.activity_label.setText(f"Μου έδωσες: {item}")
+        self.activity_label.setText(f"Ο φρουρός σου έδωσε: {item}")
 
 
 if __name__ == "__main__":
